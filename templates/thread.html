@@ -1,0 +1,41 @@
+<html>
+	<head>
+		<title> {{ board }} on {{ name }} </title>
+		<link rel="stylesheet" type="text/css" href="/static/style.css"/>
+	</head>
+	<body>
+		<div id="sideBar">
+			<form action="/reply/{{ thread.doc_id }}" method="POST" enctype="multipart/form-data">
+				<input type="hidden" name="board" value="{{ boardTag }}">
+				<textarea name="body" placeholder="Type your post here"></textarea>
+				<input type="file" name="file"/>
+				<input type="submit" value="Create Thread"/>
+			</form>
+
+			<div id="boardList">
+			{% for boardName in boardList %}
+				<a href="/{{ boardName }}" class="boardLink">
+					<img src="/static/boardThumbnails/{{ boardName }}.png"/>
+					{{ boardList[boardName]['name'] }}
+				</a>
+			{% end %}
+			</div>
+		</div>
+		<div id="threadContainer">
+			<h1> {{ board }} </h1>
+			<div id="{{ thread.doc_id }}" class="thread">
+				<img src="/thumbnails/{{ thread['file'] }}"/>
+				<span class="threadTitle"> {{ thread['title'] }} </span>
+				<span class="threadText"> {{ thread['text'] }} </span>
+			</div>
+			{% for reply in thread['replys'] %}
+				<div class="threadReply">
+					{% if reply['file'] %}
+						<img src="/thumbnails/{{ reply['file'] }}"/>
+					{% end %}
+					<span class="replyBody"> {{ reply['text'] }} </span>
+				</div>
+			{% end %}
+		</div>
+	</body>	
+</html>
